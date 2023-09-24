@@ -3,12 +3,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
 import { resume } from "../assets/img/index";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
-const AboutMeView = () => {
+const AboutMeEdit = () => {
   const rootState = useSelector((state) => state.aboutMeSlice);
-  console.log("Root State", rootState);
+
   return (
     <Box
       sx={{
@@ -18,7 +18,8 @@ const AboutMeView = () => {
         flexDirection: "column",
       }}
     >
-      <Box>
+      <Box sx={{ display: "flex", gap: "10px" }}>
+        <KeyboardArrowLeftIcon />
         <Typography
           variant="body1"
           sx={{ fontWeight: "bold", marginBottom: "30px" }}
@@ -37,9 +38,7 @@ const AboutMeView = () => {
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
           About me
         </Typography>
-        <Link to={`editAboutMe`}>
-          <EditIcon sx={{ cursor: "pointer", textDecoration:'none' }} fontSize="20px" />
-        </Link>
+        <EditIcon sx={{ cursor: "pointer" }} fontSize="20px" />
       </Box>
       <Box>
         {rootState && rootState.aboutMe !== "" ? (
@@ -118,4 +117,4 @@ const AboutMeView = () => {
   );
 };
 
-export default AboutMeView;
+export default AboutMeEdit;

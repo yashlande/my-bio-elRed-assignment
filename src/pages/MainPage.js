@@ -1,16 +1,16 @@
 import { Box } from "@mui/material";
-import { Outlet } from "react-router";
+import AboutMeView from "./AboutMeView";
 // import logo from './logo.svg';
 // import './App.css';
 
-function App({children}) {
+function MainPage() {
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ width: "375px", height: "812px", backgroundColor: "white" }}>
-        {children}
+        <AboutMeView />
       </Box>
     </Box>
   );
 }
 
-export default App;
+export default MainPage;
