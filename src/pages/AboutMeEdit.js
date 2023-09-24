@@ -1,13 +1,44 @@
-import { Box, Divider, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import React from "react";
+import React, { useState } from "react";
 import { resume } from "../assets/img/index";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { setAboutMe, setBloodGroup } from "../store/aboutMeSlice";
 
 const AboutMeEdit = () => {
   const rootState = useSelector((state) => state.aboutMeSlice);
+  const history = useNavigate();
+  const dispatch = useDispatch();
+  const [bloodGroup, setBloodGroupState] = useState(rootState.bloodGroup);
+  const [aboutMe, setAboutMeState] = useState(rootState.aboutMe);
+  const bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
+
+  const handleBloodGroupChange = (event) => {
+    setBloodGroupState(event.target.value);
+  };
+
+  const handleAboutMeChange = (event) => {
+    setAboutMeState(event.target.value);
+  };
+
+  const handleSaveBtn = () => {
+    dispatch(setAboutMe(aboutMe));
+    dispatch(setBloodGroup(bloodGroup));
+    history('/')
+  };
 
   return (
     <Box
@@ -19,7 +50,10 @@ const AboutMeEdit = () => {
       }}
     >
       <Box sx={{ display: "flex", gap: "10px" }}>
-        <KeyboardArrowLeftIcon />
+        <Link to={"/"}>
+          {" "}
+          <KeyboardArrowLeftIcon />
+        </Link>
         <Typography
           variant="body1"
           sx={{ fontWeight: "bold", marginBottom: "30px" }}
@@ -35,28 +69,21 @@ const AboutMeEdit = () => {
           width: "100%",
         }}
       >
-        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-          About me
-        </Typography>
-        <EditIcon sx={{ cursor: "pointer" }} fontSize="20px" />
+        <Typography variant="body1">Write something about yourself?</Typography>
       </Box>
       <Box>
-        {rootState && rootState.aboutMe !== "" ? (
-          <Typography variant="body2">{rootState.aboutMe}</Typography>
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              height: "30px",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="body2" sx={{ color: "#949293" }}>
-              No about me added yet
-            </Typography>
-          </Box>
-        )}
+        <TextField
+          id="outlined-multiline-static"
+          multiline
+          rows={4}
+          variant="filled"
+          value={aboutMe}
+          onChange={handleAboutMeChange}
+          sx={{
+            width: "100%",
+            "& .MuiOutlinedInput-notchedOutline": { border: "none !important" },
+          }}
+        />
       </Box>
       <Divider sx={{ margin: "20px 0px" }} />
       <Box
@@ -70,48 +97,48 @@ const AboutMeEdit = () => {
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
           Blood group
         </Typography>
-        {rootState && rootState.bloodGroup !== "" ? (
-          <Typography variant="body1" sx={{ color: "#949293" }}>
-            {rootState.bloodGroup}
-          </Typography>
-        ) : (
-          <Typography variant="body1" sx={{ color: "#949293" }}>
-            Select
-          </Typography>
-        )}
-      </Box>
-      <Box>
-        <Box
-          sx={{
-            height: "50px",
-            boxShadow: "rgba(58, 53, 65, 0.1) 0px 2px 10px 0px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: "20px",
-            cursor: "pointer",
-          }}
-        >
-          <Box
-            sx={{
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-            }}
+        <FormControl sx={{ width: "100px" }} size="small">
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={bloodGroup}
+            onChange={handleBloodGroupChange}
           >
-            <img
-              src={resume}
-              alt="resume-icon"
-              width={"40px"}
-              height={"40px"}
-            />
-            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-              Resume
-            </Typography>
-          </Box>
-          <ChevronRightIcon />
-        </Box>
+            {bloodGroups.map((group, key) => (
+              <MenuItem key={key} value={group}>
+                {group}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "50px",
+        }}
+      >
+        <Button
+          sx={{
+            borderRadius: "8px",
+            backgroundColor: "#E72D38",
+            color: "white",
+            width: "100%",
+            ":hover": {
+              backgroundColor: "#963933",
+            },
+            ":disabled":{
+              backgroundColor:'#FDEBEB'
+            }
+          }}
+          disabled={bloodGroup == "" || aboutMe == ""}
+          onClick={() => handleSaveBtn()}
+        >
+          Save
+        </Button>
       </Box>
     </Box>
   );

@@ -6,9 +6,9 @@ const initialState = {
   resume: "",
 };
 
-export const aboutMeSlice = createSlice({
-  name: "counter",
-  initialState,
+const aboutMeSlice = createSlice({
+  name: "aboutMeSlice",
+  initialState: initialState,
   reducers: {
     setAboutMe: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -27,6 +27,6 @@ export const aboutMeSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {setAboutMe, setBloodGroup, setResume} = aboutMeSlice.actions;
+export const { setAboutMe, setBloodGroup, setResume } = aboutMeSlice.actions;
 
 export default aboutMeSlice.reducer;

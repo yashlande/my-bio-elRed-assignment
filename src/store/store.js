@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import aboutMeSlice from './aboutMeSlice'
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     aboutMeSlice,
   },
 })
+
+export default store
