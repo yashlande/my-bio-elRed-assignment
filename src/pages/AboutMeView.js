@@ -3,8 +3,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
 import { resume } from "../assets/img/index";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useSelector } from "react-redux";
 
-const AboutMe = () => {
+const AboutMeView = () => {
+  const rootState = useSelector((state) => state.aboutMeSlice);
+  console.log("Root State", rootState);
   return (
     <Box
       sx={{
@@ -36,11 +39,22 @@ const AboutMe = () => {
         <EditIcon sx={{ cursor: "pointer" }} fontSize="20px" />
       </Box>
       <Box>
-        <Typography variant="body2">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam
-          sapiente commodi, voluptates at non, excepturi maxime deleniti nostrum
-          culpa doloribus voluptas deserunt ut quo.
-        </Typography>
+        {rootState && rootState.aboutMe !== "" ? (
+          <Typography variant="body2">{rootState.aboutMe}</Typography>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              height: "30px",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body2" sx={{ color: "#949293" }}>
+              No about me added yet
+            </Typography>
+          </Box>
+        )}
       </Box>
       <Divider sx={{ margin: "20px 0px" }} />
       <Box
@@ -54,9 +68,15 @@ const AboutMe = () => {
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
           Blood group
         </Typography>
-        <Typography variant="body1" sx={{ color: "gray" }}>
-          Blood group
-        </Typography>
+        {rootState && rootState.bloodGroup !== "" ? (
+          <Typography variant="body1" sx={{ color: "#949293" }}>
+            {rootState.bloodGroup}
+          </Typography>
+        ) : (
+          <Typography variant="body1" sx={{ color: "#949293" }}>
+            Select
+          </Typography>
+        )}
       </Box>
       <Box>
         <Box
@@ -67,7 +87,7 @@ const AboutMe = () => {
             justifyContent: "space-between",
             alignItems: "center",
             marginTop: "20px",
-            cursor:'pointer'
+            cursor: "pointer",
           }}
         >
           <Box
@@ -95,4 +115,4 @@ const AboutMe = () => {
   );
 };
 
-export default AboutMe;
+export default AboutMeView;
