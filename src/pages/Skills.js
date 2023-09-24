@@ -1,14 +1,42 @@
 import { Box, Divider, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { resume } from "../assets/img/index";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getHobbies, getProfessionalSkills, getSubjects } from "../store/skillsSlice";
+import SkillSet from "../components/SkillSet";
 
 const Skills = () => {
-  const rootState = useSelector((state) => state.aboutMeSlice);
-  console.log("Root State", rootState);
+  const [skills, setSkillsState] = useState([]);
+  const [hobbies, setHobbiesState] = useState([])
+  const [subjects, setSubjectState] = useState([])
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProfessionalSkills()).then((req) => {
+      const data = req?.payload[0]?.skills;
+      if (data.length > 0) {
+        setSkillsState(data);
+      }
+    });
+
+    dispatch(getHobbies()).then((req) => {
+      const data = req?.payload[0]?.hobbies;
+      if (data?.length > 0) {
+        setHobbiesState(data);
+      }
+    });
+
+    dispatch(getSubjects()).then((req) => {
+      const data = req?.payload[0]?.subjects;
+      if (data?.length > 0) {
+        setSubjectState(data);
+      }
+    });
+  }, []);
+
   return (
     <Box
       sx={{
@@ -36,6 +64,9 @@ const Skills = () => {
           />
         </Link>
       </Box>
+      <SkillSet skillName={'My Professional Skills'} skillData={skills}/>
+      <SkillSet skillName={'My Hobbies'} skillData={hobbies}/>
+      <SkillSet skillName={'My Subjects'} skillData={subjects}/>
     </Box>
   );
 };
